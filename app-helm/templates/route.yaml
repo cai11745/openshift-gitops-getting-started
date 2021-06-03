@@ -1,0 +1,19 @@
+{{- if .Values.route.enabled -}}
+{{- $fullName := include "petclinic.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "petclinic.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.route.hosts }} 
+  host: {{ .Values.route.hosts }}
+  {{- end }}
+  port:
+    targetPort: {{ $svcPort }}
+  to:
+    kind: Service
+    name: {{ $fullName }}
+{{- end }}

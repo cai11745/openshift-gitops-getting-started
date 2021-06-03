@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  managedFields:
+    manager: argocd-server
+    manager: argocd-application-controller
+    operation: Update
+  name: spring-kustomization
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: demo-kustomization
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    kustomize:
+      namePrefix: uat
+    path: app-kustomization
+    repoURL: http://gogs-demo-cicd.apps.ocp4.example.com/gogs/openshift-gitops-getting-started.git
+    targetRevision: HEAD
